@@ -10,6 +10,7 @@ Como evaluación de Modyo®.
 - Lombok 1.18.24
 - JQuery
 - Bootstrap 4.0
+- HttpClient
 
 Mas detalles en pom.xml
 

@@ -3,14 +3,8 @@ package cl.brian.Pokedex.restService;
 import cl.brian.Pokedex.models.Pokemon;
 import cl.brian.Pokedex.service.PokemonService;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
-
-import java.util.Arrays;
 import java.util.List;
 
 @RestController

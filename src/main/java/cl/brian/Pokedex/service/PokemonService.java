@@ -8,6 +8,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.introspect.VisibilityChecker;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -24,6 +25,14 @@ public class PokemonService {
         return get(0, 6);
     }
 
+    /**
+     * Obtengo listado de pokemones paginados, desde API de PokeApi https://pokeapi.co/
+     * @param desde indica inicio de paginación
+     * @param cuantos cantidad de items a retornar
+     * @return retorno de lista de pokemones
+     * @throws JsonProcessingException
+     */
+    @Cacheable("pokemones")
     public List<Object> get(int desde, int cuantos) throws JsonProcessingException {
         RestTemplate rt = new RestTemplate();
 
@@ -46,10 +55,15 @@ public class PokemonService {
         retorno.add(movimiento);
         retorno.add(pokemones);
 
-
         return retorno;
     }
 
+    /**
+     * Construyo lista de pokemons que serán devueltos en la API.
+     * @param listado con formato de la API de PokeApi https://pokeapi.co/
+     * @return Listado de objetos Pokemon
+     * @throws JsonProcessingException
+     */
     private List<Pokemon> construyeLista(List<ListadoInicialPoke> listado) throws JsonProcessingException {
         List<Pokemon> lista = new ArrayList<Pokemon>();
 
@@ -59,7 +73,13 @@ public class PokemonService {
         return lista;
     }
 
-
+    /**
+     * Obtengo los datos de un Pokemon
+     * @param nombre nombre del Pokemon a recuperar
+     * @return Retorno instancia de un Pokemon
+     * @throws JsonProcessingException
+     */
+    @Cacheable("pokemon")
     public Pokemon get(String nombre) throws JsonProcessingException {
         RestTemplate rt = new RestTemplate();
 

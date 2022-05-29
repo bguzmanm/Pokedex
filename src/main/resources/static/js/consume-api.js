@@ -79,8 +79,7 @@ $.fn.onOff = function ($p, $n, $desde){
 
 }
 
-
-//obtengo los tipos
+/*obtengo los tipos */
 $.fn.getTypes = function($types){
     let strTypes = "";
     $.each($types, function(i, tipo){
@@ -91,7 +90,7 @@ $.fn.getTypes = function($types){
     return strTypes;
 }
 
-//obtengo las habilidades
+/*obtengo las habilidades */
 $.fn.getAbilities = function($abilities){
     let strAbility = "";
     $.each($abilities, function(i, habilidad){
@@ -102,7 +101,7 @@ $.fn.getAbilities = function($abilities){
     return strAbility;
 }
 
-
+/*Llamo a la API*/
 $(document).ready(function () {
     $.fn.callAPI(0, elementos_pagina);
 });
