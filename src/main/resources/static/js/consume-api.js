@@ -34,7 +34,6 @@ $.fn.callAPI = function ($desde, $hasta) {
             for (let i = 0; i < pokemones.length; i++) {
 
                 let element = pokemones[i];
-
                 let urlimg = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/" +
                     element.id + ".png";
 
