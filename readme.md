@@ -1,4 +1,4 @@
-# PokeDesx
+# PokeDex
 Desarrollado por Brian Guzmán M.
 
 Como evaluación de Modyo®.
@@ -10,7 +10,6 @@ Como evaluación de Modyo®.
 - Lombok 1.18.24
 - JQuery
 - Bootstrap 4.0
-- HttpClient
 
 Mas detalles en pom.xml
 
