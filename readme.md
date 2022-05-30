@@ -15,4 +15,7 @@ Mas detalles en pom.xml
 
 ## Instrucciones de Despliegue
 
+`./mvnw -DskipTests spring-boot:run`
 
+## Preview
+https://8080-15444c85-0a64-4437-9cd1-b184fec2894d.cs-us-east1-vpcf.cloudshell.dev/?authuser=0
