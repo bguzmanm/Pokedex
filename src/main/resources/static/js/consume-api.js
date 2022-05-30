@@ -1,35 +1,36 @@
-
 var elementos_pagina = 6;
+let uri = 'http://localhost:8080/pokeRest';
 
 // Call the dataTables jQuery plugin
 $.fn.callAPI = function ($desde, $hasta) {
 
     /* reserteo objetos */
     $("#pokes").empty(".col-sm-4 p-2");
-    let uri = 'http://localhost:8080/pokeRest';
+
+    let url = uri;
 
     if ($desde != undefined && $hasta != undefined) {
-        uri += '/?offset=' + $desde + "&limit=" + $hasta;
+        url += '/?offset=' + $desde + "&limit=" + $hasta;
     }
+    $("#page-loading").show();
+    $.getJSON(url, function (data) {
 
-    $.getJSON(uri, function (data) {
-            console.log(data);
             //muestro u oculto botones dependiendo de los datos.
             $.fn.onOff(data[0][0], data[0][1], $desde)
 
             let pokemones = data[1];
 
             //div con tarjeta de cada pokemon
-            let card = '<div class="col-sm-4 p-2"><div class="card w-75" style="width: 18rem;">\n' +
+            let card = '<div class="col-sm-4 p-2 placeholder"><div class="card w-75" style="width: 18rem;">\n' +
                 ' <img src="$urlimg" class="card-img-top" alt="$nombrePokemon">\n' +
                 ' <div class="card-body">\n' +
                 ' <h5 class="card-title" >$nombrePokemon</h5>\n' +
                 ' <p class="card-text">Tipo: $tipo</p>' +
                 ' <p class="card-text">Peso: $peso</p>' +
                 ' <p class="card-text">Habilidades: $habilidades</p>' +
-                ' <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Atrapalo!</a>\n' +
-                ' </div></div>\n' +
-                ' </div>';
+                ' <a href="#pokeModal" id="$nombrePokemon" class="btn btn-primary" data-bs-toggle="modal" ' +
+                ' data-bs-target="#pokeModal"> Atrapalo! </a></div></div></div>';
+
 
             for (let i = 0; i < pokemones.length; i++) {
 
@@ -38,6 +39,7 @@ $.fn.callAPI = function ($desde, $hasta) {
                     element.id + ".png";
 
                 let card1 = card.replace("$nombrePokemon", element.name);
+                card1 = card1.replace("$nombrePokemon", element.name);
                 card1 = card1.replace("$urlimg", urlimg);
 
                 card1 = card1.replace("$tipo", $.fn.getTypes(element.types));
@@ -46,15 +48,37 @@ $.fn.callAPI = function ($desde, $hasta) {
                 card1 = card1.replace("$peso", element.weight);
                 $("#pokes").append(
                     card1.replace("$nombrePokemon", element.name)
-
                 );
             }
-        }
-    );
+
+            /* Configuro botón de Atrápalo!*/
+            $(".btn.btn-primary").click(function () {
+                $.fn.callDetallePokemon($(this).attr('id'));
+            });
+
+        });
+    $("#page-loading").hide();
 
 };
+
+$.fn.callDetallePokemon = function ($name) {
+    $("#pokeModalNombre").text($name);
+    let url = uri + "/" + $name;
+
+    $("#modal-loading").show();
+    $.getJSON(url, function (data) {
+        $("#pokeModalTipo").text("Tipo: " + $.fn.getTypes(data.types));
+        $("#pokeModalPeso").text("Peso: " + data.weight);
+        $("#pokeModalHabilidades").text("Habilidades: " + $.fn.getAbilities(data.abilities));
+        $("#pokeModalImg").attr("src", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/" +
+            data.id + ".png");
+    });
+    $("#modal-loading").hide();
+
+}
+
 /* oculto y muestro botones de siguiente y anterior */
-$.fn.onOff = function ($p, $n, $desde){
+$.fn.onOff = function ($p, $n, $desde) {
 
     if ($p != "null") {
 
@@ -67,7 +91,7 @@ $.fn.onOff = function ($p, $n, $desde){
         $("#prior").hide();
     }
     if ($n != "null") {
-        
+
         $("#next").show();
         $("#next").off("click");
         $("#next").click(function () {
@@ -80,10 +104,10 @@ $.fn.onOff = function ($p, $n, $desde){
 }
 
 /*obtengo los tipos */
-$.fn.getTypes = function($types){
+$.fn.getTypes = function ($types) {
     let strTypes = "";
-    $.each($types, function(i, tipo){
-        if (strTypes.length>0)
+    $.each($types, function (i, tipo) {
+        if (strTypes.length > 0)
             strTypes = strTypes.concat(", ");
         strTypes = strTypes.concat(tipo.type[0].name);
     });
@@ -91,10 +115,10 @@ $.fn.getTypes = function($types){
 }
 
 /*obtengo las habilidades */
-$.fn.getAbilities = function($abilities){
+$.fn.getAbilities = function ($abilities) {
     let strAbility = "";
-    $.each($abilities, function(i, habilidad){
-        if (strAbility.length>0)
+    $.each($abilities, function (i, habilidad) {
+        if (strAbility.length > 0)
             strAbility = strAbility.concat(", ");
         strAbility = strAbility.concat(habilidad.ability.name);
     });

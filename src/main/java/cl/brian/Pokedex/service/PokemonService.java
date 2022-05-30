@@ -21,6 +21,13 @@ public class PokemonService {
 
     private final String url_apirest = "https://pokeapi.co/api/v2/pokemon/";
 
+    /**
+     * Obtengo listado de pokemones paginados (por defecto),
+     * desde API de PokeApi https://pokeapi.co/
+     * Llamada sin parámetros al get de Listado de Pokemones
+     * @return retorna lista de pokemones.
+     * @throws JsonProcessingException
+     */
     public List<Object> get() throws JsonProcessingException {
         return get(0, 6);
     }
@@ -44,11 +51,12 @@ public class PokemonService {
         String strpokes = mapper.readTree(response.getBody()).path("results").toString();
         //obtengo el resto de los datos de los pokemones de la lista.
         List<ListadoInicialPoke> lista = mapper.readValue(strpokes, new TypeReference<List<ListadoInicialPoke>>(){});
-
+        //Mapeo pokemones a List<Pokemon>
         List<Pokemon> pokemones = construyeLista(lista);
 
+        //Construyo lista de retorno, donde se incluyen path pasa avanzar y retroceder en
+        //paginación de Listado
         List<Object> retorno = new ArrayList<>();
-
         String movimiento[] = new String[2];
         movimiento[0] = mapper.readTree(response.getBody()).path("previous").toString();
         movimiento[1] = mapper.readTree(response.getBody()).path("next").toString();

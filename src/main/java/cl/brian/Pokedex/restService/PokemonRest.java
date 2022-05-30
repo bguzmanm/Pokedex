@@ -29,7 +29,7 @@ public class PokemonRest {
         }
     }
 
-    @RequestMapping(value = "PokeRestOne")
+    @RequestMapping(value = "pokeRest/{nombre}")
     public Pokemon getPokemon(@PathVariable(name = "nombre") String nombre) throws JsonProcessingException {
         return ps.get(nombre);
     }
