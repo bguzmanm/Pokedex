@@ -1,5 +1,5 @@
 var elementos_pagina = 6;
-let uri = 'http://localhost:8080/pokeRest';
+let uri = window.location + 'pokeRest';
 
 // Call the dataTables jQuery plugin
 $.fn.callAPI = function ($desde, $hasta) {
